@@ -1,6 +1,10 @@
 # Environment variables
 .env
 .env.*
+!.env.example
+
+# Claude Code
+.claude/
 
 # OS
 .DS_Store

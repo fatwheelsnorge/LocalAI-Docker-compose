@@ -35,7 +35,7 @@ services:
       - ollama
     environment:
       - OLLAMA_BASE_URL=http://ollama:11434
-      - WEBUI_SECRET_KEY=fatwheels-bobby-secret-change-me
+      - WEBUI_SECRET_KEY=${WEBUI_SECRET_KEY}
       - WEBUI_NAME=Bobby
       - DEFAULT_LOCALE=nb-NO
     extra_hosts:
