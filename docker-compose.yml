@@ -1,0 +1,42 @@
+services:
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+    restart: unless-stopped
+    tty: true
+    pull_policy: always
+    ports:
+      - "11434:11434"
+    volumes:
+      - D:/LocalAI/Ollama:/root/.ollama
+    environment:
+      - OLLAMA_HOST=0.0.0.0
+      - "OLLAMA_ORIGINS=*"
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,utility
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities:
+                - gpu
+
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:main
+    container_name: open-webui
+    restart: unless-stopped
+    ports:
+      - "3000:8080"
+    volumes:
+      - D:/LocalAI/Docker/volumes/open-webui:/app/backend/data
+    depends_on:
+      - ollama
+    environment:
+      - OLLAMA_BASE_URL=http://ollama:11434
+      - WEBUI_SECRET_KEY=fatwheels-bobby-secret-change-me
+      - WEBUI_NAME=Bobby
+      - DEFAULT_LOCALE=nb-NO
+    extra_hosts:
+      host.docker.internal: host-gateway
